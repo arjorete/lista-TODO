@@ -55,5 +55,14 @@ export class TodoList {
         this.todos = this.todos.map( obj => Todo.fromJson( obj));
     }
 
+    contarFaltantes(){
+        let conteo = 0;
+        for(let tod of this.todos){
+            if(tod.completado == false){
+                conteo++;
+            }
+        }
+        return conteo;
+    }
 
 }
