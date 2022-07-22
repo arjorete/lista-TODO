@@ -4,12 +4,15 @@ import {todoList} from '../index';
 
 
 //***Referencias en el HTML */
-const divTodoList = document.querySelector('.todo-list');
-const txtImput = document.querySelector('.new-todo');
-const btnBorrar = document.querySelector('.clear-completed');
-const ulFiltros = document.querySelector('.filters');
-const anchorFiltros = document.querySelectorAll('.filtro');
+const divTodoList     = document.querySelector('.todo-list');
+const txtImput        = document.querySelector('.new-todo');
+const btnBorrar       = document.querySelector('.clear-completed');
+const ulFiltros       = document.querySelector('.filters');
+const anchorFiltros   = document.querySelectorAll('.filtro');
+const contador        = document.querySelector('#count');
 
+
+                    //***FUNCIONES */
 export const crearTodoHtml = ( todo )=> {
     const htmlTodo = `
         <li class="${ (todo.completado) ? 'completed' : '' }" data-id="${todo.id}">
@@ -25,9 +28,14 @@ export const crearTodoHtml = ( todo )=> {
     div.innerHTML = htmlTodo;
     divTodoList.append (div.firstElementChild);
 
-    //return div;
+    // return div;
 }
 
+export const imprimirFaltantes = ()=>{
+    contador.innerText = todoList.contarFaltantes();
+}
+
+                //***EVENTOS */
 txtImput.addEventListener('keyup', ( event )=>{
 
     if ( event.keyCode ===  13 && txtImput.value.length > 0){
@@ -36,6 +44,7 @@ txtImput.addEventListener('keyup', ( event )=>{
         todoList.nuevoTodo(nuevoTodo);
         crearTodoHtml(nuevoTodo);
         txtImput.value = '';
+        imprimirFaltantes();
     }
 
 });
@@ -52,6 +61,8 @@ divTodoList.addEventListener('click', (event)=>{
         todoList.eliminarTodo(todoId);
         divTodoList.removeChild(todoElemento);
     }
+
+    imprimirFaltantes();
 });
 
 btnBorrar.addEventListener('click', ()=>{
@@ -62,6 +73,7 @@ btnBorrar.addEventListener('click', ()=>{
             divTodoList.removeChild(elemento);
         }
     }
+    imprimirFaltantes();
 });
 
 ulFiltros.addEventListener('click',(event)=>{
@@ -90,4 +102,5 @@ ulFiltros.addEventListener('click',(event)=>{
                 break;
         }
     }
+    imprimirFaltantes();
 });
